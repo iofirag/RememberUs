@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <TextView android:id="@+id/rememberMessaage"
+        android:textSize="23sp"
+        android:textStyle="bold"
+        android:textColor="#0041ff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="464dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/done"
+        android:layout_marginRight="99dp"
+        android:autoText="false"
+        android:maxHeight="37dp"
+        android:minHeight="37dp"
+        android:onClick="editReminder" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/done"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignBottom="@+id/rememberMessaage"
+        android:layout_marginLeft="290dp"
+        android:layout_alignParentLeft="true"
+        android:background="@drawable/abc_ic_cab_done_holo_light"
+        android:onClick="done"
+        android:focusable="false" />
+
+</RelativeLayout>
