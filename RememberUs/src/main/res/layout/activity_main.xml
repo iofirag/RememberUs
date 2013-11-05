@@ -12,29 +12,19 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/btAddTask"
-        android:onClick="addTask"
+        android:id="@+id/btSaveTask"
+        android:onClick="openCreateTaskActivity"
+        android:background="@android:drawable/ic_menu_edit"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:background="@android:drawable/ic_input_add" />
+        android:layout_centerHorizontal="true" />
 
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/lvListReminders"
         android:focusable="true"
-        android:layout_below="@+id/btAddTask"
+        android:layout_below="@+id/btSaveTask"
         android:layout_alignParentRight="true"
         android:paddingTop="20dp" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/description"
-        android:layout_alignParentTop="true"
-        android:layout_above="@+id/lvListReminders"
-        android:layout_toLeftOf="@+id/btAddTask"
-        android:layout_alignParentLeft="true"
-        android:hint="Description" />
 
 </RelativeLayout>
