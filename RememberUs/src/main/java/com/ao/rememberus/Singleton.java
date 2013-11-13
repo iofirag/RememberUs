@@ -11,12 +11,13 @@ public class Singleton {
     private static Singleton instance = null;
 
     private Context context;
-    private ArrayList<Item> results = new ArrayList<Item>();
 
-
+    private ArrayList<Task> results = new ArrayList<Task>();
+    private DatabaseHandler db;
 
     private Singleton(Context context) {
         this.context = context;
+        db = new DatabaseHandler(context);
     }
 
     public static synchronized Singleton getInstance(Context context) {
@@ -25,12 +26,18 @@ public class Singleton {
         }
         return instance;
     }
+
     //--------------------------------------------
 
 
-
-    public ArrayList<Item> getArrayList(){
+    public void setArrayList(ArrayList<Task> results) {
+        this.results = results;
+    }
+    public ArrayList<Task> getArrayList(){
         return results;
+    }
+    public DatabaseHandler getDb() {
+        return db;
     }
 }
 

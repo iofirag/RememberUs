@@ -12,22 +12,22 @@ import java.util.ArrayList;
 /**
  * Created by joe on 25/10/13.
  */
-public class ItemListBaseAdapter extends BaseAdapter {
+public class TaskListBaseAdapter extends BaseAdapter {
 
-    private static ArrayList<Item> itemDetailsrrayList;
+    private static ArrayList<Task> taskDetailsArrayList;
     private LayoutInflater l_Inflater;
 
-    public ItemListBaseAdapter(Context context, ArrayList<Item> results) {
-        itemDetailsrrayList = results;
+    public TaskListBaseAdapter(Context context, ArrayList<Task> results) {
+        taskDetailsArrayList = results;
         l_Inflater = LayoutInflater.from(context);
     }
 
     public int getCount() {
-        return itemDetailsrrayList.size();
+        return taskDetailsArrayList.size();
     }
 
     public Object getItem(int position) {
-        return itemDetailsrrayList.get(position);
+        return taskDetailsArrayList.get(position);
     }
 
     public long getItemId(int position) {
@@ -49,7 +49,7 @@ public class ItemListBaseAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.remindMessage.setText(itemDetailsrrayList.get(position).getRemindMessage());
+        holder.remindMessage.setText(taskDetailsArrayList.get(position).getTaskMessage());
 
         return convertView;
     }

@@ -9,19 +9,25 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.List;
+
 public class MainActivity extends Activity {
 
     Singleton singleton=null;
-    private ItemListBaseAdapter currentList;
+    private TaskListBaseAdapter currentList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        singleton.getInstance(this);
+
+        if (singleton.getInstance(this).getArrayList().isEmpty())
+            restoreFromDb();
+
+        //singleton.getInstance(this).getDb().onUpgrade(singleton.getInstance(this).getDb().getWritableDatabase(), 1,2);
         updateListView();
 
-        currentList = new ItemListBaseAdapter(this, singleton.getInstance(this).getArrayList());
+        currentList = new TaskListBaseAdapter(this, singleton.getInstance(this).getArrayList());
         ListView listView = (ListView) findViewById(R.id.lvListReminders);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -31,6 +37,22 @@ public class MainActivity extends Activity {
         });
     }
 
+    public void restoreFromDb(){
+        List<Task> list = singleton.getInstance(this).getDb().getAllTasks();
+        for(Task task : list){
+            String str = new String( task.getTaskMessage() );
+            singleton.getInstance(this).getArrayList().add(task);
+        }
+    }
+//    public void saveToDb(){
+//        for(Task task : singleton.getInstance(this).getArrayList()){
+//            String str = new String( task.getTaskMessage() );
+//            if (str!=null){
+//                Task newTask = new Task(str);
+//                singleton.getInstance(this).getDb().addTask(newTask);
+//            }
+//        }
+//    }
 
     public void openCreateTaskActivity (View view)
     {
@@ -41,7 +63,7 @@ public class MainActivity extends Activity {
     // Update the list-View
     public void updateListView(){
         ListView lv = (ListView) findViewById(R.id.lvListReminders);
-        ItemListBaseAdapter currentList = new ItemListBaseAdapter(this, singleton.getInstance(this).getArrayList());
+        TaskListBaseAdapter currentList = new TaskListBaseAdapter(this, singleton.getInstance(this).getArrayList());
         lv.setAdapter(currentList);
     }
 
@@ -49,25 +71,25 @@ public class MainActivity extends Activity {
 
         ListView listView = (ListView) findViewById(R.id.lvListReminders);
         int position = listView.getPositionForView(view);
-        Item selectedItem = (Item) listView.getItemAtPosition(position);
+        Task selectedTask = (Task) listView.getItemAtPosition(position);
         Toast.makeText(MainActivity.this, "edited item : " + " " +
-                selectedItem.getRemindMessage(), Toast.LENGTH_LONG).show();
+                selectedTask.getTaskMessage(), Toast.LENGTH_LONG).show();
         currentList.notifyDataSetChanged();
     }
 
     public void done(View view) {
         ListView listView = (ListView) findViewById(R.id.lvListReminders);
         int position = listView.getPositionForView(view);
-        Item selectedItem = (Item) listView.getItemAtPosition(position);
+        Task selectedTask = (Task) listView.getItemAtPosition(position);
         Toast.makeText(MainActivity.this, "deleted item : " + " " +
-                selectedItem.getRemindMessage(), Toast.LENGTH_LONG).show();
-        Delete(position);
-        //updateListView();
-        currentList.notifyDataSetChanged();
+                selectedTask.getTaskMessage(), Toast.LENGTH_LONG).show();
+        Delete(selectedTask, position);
+        //currentList.notifyDataSetChanged();
     }
 
-    public void Delete(int position){
+    public void Delete(Task taskToDelete, int position){
         singleton.getInstance(this).getArrayList().remove(position);
+        singleton.getInstance(this).getDb().deleteTask( taskToDelete);
         updateListView();
     }
 

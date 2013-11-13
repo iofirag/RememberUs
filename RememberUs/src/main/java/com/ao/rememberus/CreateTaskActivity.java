@@ -16,31 +16,28 @@ public class CreateTaskActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_task_activity);
-        singleton.getInstance(this);
 
+        EditText et = (EditText) findViewById(R.id.description);
+        et.requestFocus();
     }
 
     // On click '+' button
     @TargetApi(Build.VERSION_CODES.GINGERBREAD)
       public void saveTask(View view){
-          EditText description = (EditText) findViewById(R.id.description);
-          if (description.getText().toString().isEmpty()) return;
-          Item item = new Item(description.getText().toString());
-          singleton.getInstance(this).getArrayList().add(0, item);
-          description.setText("");
-          finish();
-//        updateListView();
+        EditText description = (EditText) findViewById(R.id.description);
+        if (description.getText().toString().isEmpty()) return;
+        Task task = new Task(description.getText().toString());
+        singleton.getInstance(this).getArrayList().add(0, task);
+        description.setText("");
+
+        saveToDb(task);
+
+        finish();
       }
-//    public void openCreateTaskActivity (View view)
-//    {
-//        EditText description = (EditText) findViewById(R.id.description);
-//        if (description.getText().toString().isEmpty()) return;
-//        String des = description.getText().toString();
-//        Item item = new Item(des);
-//        results.add(0, item);
-//        description.setText("");
-//        updateListView();
-//    }
+
+    public void saveToDb(Task newTask){
+        singleton.getInstance(this).getDb().addTask(newTask);
+    }
 
 
 
