@@ -17,9 +17,12 @@ public class CreateTaskActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_task_activity);
 
-        EditText et = (EditText) findViewById(R.id.description);
-        et.requestFocus();
+        EditText editText = (EditText) findViewById(R.id.description);
+        editText.setFocusable(true);
+        editText.requestFocus();
+
     }
+
 
     // On click '+' button
     @TargetApi(Build.VERSION_CODES.GINGERBREAD)
@@ -28,10 +31,8 @@ public class CreateTaskActivity extends Activity {
         if (description.getText().toString().isEmpty()) return;
         Task task = new Task(description.getText().toString());
         singleton.getInstance(this).getArrayList().add(0, task);
-        description.setText("");
-
         saveToDb(task);
-
+        description.setText("");
         finish();
       }
 

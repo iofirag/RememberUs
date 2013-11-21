@@ -2,14 +2,16 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:paddingBottom="10dp"
+    android:paddingTop="8dp">
 
     <TextView android:id="@+id/rememberMessaage"
         android:textSize="23sp"
         android:textStyle="bold"
         android:textColor="#0041ff"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="28dp"
         android:layout_marginBottom="464dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
