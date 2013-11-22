@@ -75,6 +75,7 @@ public class MainActivity extends Activity {
         Toast.makeText(MainActivity.this, "edited item : " + " " +
                 selectedTask.getTaskMessage(), Toast.LENGTH_LONG).show();
         currentList.notifyDataSetChanged();
+
     }
 
     public void done(View view) {
