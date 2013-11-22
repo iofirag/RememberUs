@@ -11,7 +11,7 @@
         android:textStyle="bold"
         android:textColor="#0041ff"
         android:layout_width="wrap_content"
-        android:layout_height="28dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="464dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
@@ -19,9 +19,8 @@
         android:layout_alignRight="@+id/done"
         android:layout_marginRight="99dp"
         android:autoText="false"
-        android:maxHeight="37dp"
-        android:minHeight="37dp"
-        android:onClick="editReminder" />
+        android:onClick="editReminder"
+        android:maxLines="1" />
 
     <Button
         android:layout_width="match_parent"
