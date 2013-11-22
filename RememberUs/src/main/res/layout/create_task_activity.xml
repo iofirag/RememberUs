@@ -25,9 +25,11 @@ tools:ignore="MergeRootFrame"
     android:layout_height="wrap_content"
     android:id="@+id/description"
     android:layout_alignParentTop="true"
-    android:layout_above="@+id/lvListReminders"
     android:layout_toLeftOf="@+id/btSaveTask"
     android:layout_alignParentLeft="true"
-    android:hint="Description" />
+    android:hint="Description"
+    android:focusable="true"
+    android:layout_alignBottom="@+id/btSaveTask"/>
+    <requestFocus />
 
 </RelativeLayout>

@@ -41,7 +41,7 @@ public class MainActivity extends Activity {
         List<Task> list = singleton.getInstance(this).getDb().getAllTasks();
         for(Task task : list){
             String str = new String( task.getTaskMessage() );
-            singleton.getInstance(this).getArrayList().add(task);
+            singleton.getInstance(this).getArrayList().add(0,task);
         }
     }
 //    public void saveToDb(){
@@ -75,6 +75,7 @@ public class MainActivity extends Activity {
         Toast.makeText(MainActivity.this, "edited item : " + " " +
                 selectedTask.getTaskMessage(), Toast.LENGTH_LONG).show();
         currentList.notifyDataSetChanged();
+
     }
 
     public void done(View view) {

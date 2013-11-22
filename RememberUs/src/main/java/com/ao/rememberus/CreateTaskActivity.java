@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 
 public class CreateTaskActivity extends Activity {
@@ -17,9 +18,13 @@ public class CreateTaskActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_task_activity);
 
-        EditText et = (EditText) findViewById(R.id.description);
-        et.requestFocus();
+//      EditText editText = (EditText) findViewById(R.id.description);
+//      editText.requestFocus();
+//      editText.setFocusable(true);
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
     }
+
 
     // On click '+' button
     @TargetApi(Build.VERSION_CODES.GINGERBREAD)
@@ -28,10 +33,8 @@ public class CreateTaskActivity extends Activity {
         if (description.getText().toString().isEmpty()) return;
         Task task = new Task(description.getText().toString());
         singleton.getInstance(this).getArrayList().add(0, task);
-        description.setText("");
-
         saveToDb(task);
-
+        description.setText("");
         finish();
       }
 
