@@ -2,13 +2,21 @@ package com.ao.rememberus;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TimePicker;
+
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class CreateTaskActivity extends Activity {
 
@@ -30,19 +38,58 @@ public class CreateTaskActivity extends Activity {
     @TargetApi(Build.VERSION_CODES.GINGERBREAD)
       public void saveTask(View view){
         EditText description = (EditText) findViewById(R.id.description);
-        if (description.getText().toString().isEmpty()) return;
-        Task task = new Task(description.getText().toString());
-        singleton.getInstance(this).getArrayList().add(0, task);
-        saveToDb(task);
-        description.setText("");
-        finish();
+        if (!description.getText().toString().isEmpty()){
+
+            TimePicker timePicker = (TimePicker) findViewById(R.id.timePicker);
+            DatePicker datePicker = (DatePicker) findViewById(R.id.datePicker);
+            Date date= new Date(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(), timePicker.getCurrentHour() , timePicker.getCurrentMinute() );
+
+            String taskMessage = description.getText().toString();
+            Task task = new Task(taskMessage, date);
+            singleton.getInstance(this).getArrayList().add(0, task);
+
+            //-----continue checking from here -> to register date & cancel alarmManager after if click done
+            saveToDb(task);
+            createAlarmAtDate(taskMessage, date);
+
+            description.setText("");
+            finish();
+        }
       }
 
     public void saveToDb(Task newTask){
         singleton.getInstance(this).getDb().addTask(newTask);
     }
 
+    private void createAlarmAtDate(String taskMessage, Date date){
+        Intent intent = new Intent("com.ao.rememberus.ReminderBroadCastReceiver");
+        intent.putExtra("taskMessage", taskMessage);
 
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+
+        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + millisecondsUntilDate(date) , pendingIntent);
+    }
+
+    public long millisecondsUntilDate(Date nextDate){
+        Date now = new Date();
+        // fix date before calculate
+        now.setYear(now.getYear()+1900);
+        now.setDate(now.getDay() + 2);
+
+        GregorianCalendar currentDay=new  GregorianCalendar (now.getYear(),now.getMonth(),now.getDay(),now.getHours(),now.getMinutes(),0);
+        GregorianCalendar nextDay=new  GregorianCalendar (nextDate.getYear(),nextDate.getMonth(),nextDate.getDay(),nextDate.getHours(),nextDate.getMinutes(),0);
+
+//                        System.out.println( nextDate.getYear()-now.getYear()   );
+//                        System.out.println( nextDate.getMonth()-now.getMonth() );
+//                        System.out.println( nextDate.getDay()-now.getDay()    );
+//                        System.out.println( nextDate.getHours()-now.getHours() );
+//                        System.out.println(nextDate.getMinutes()-now.getMinutes());
+
+        long diff_in_ms = nextDay.getTimeInMillis()-currentDay.getTimeInMillis();
+//                        System.out.println("diff_in_s=" +diff_in_ms/1000);
+        return diff_in_ms;
+    }
 
 
     @Override

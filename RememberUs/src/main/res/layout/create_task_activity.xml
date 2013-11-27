@@ -32,4 +32,22 @@ tools:ignore="MergeRootFrame"
     android:layout_alignBottom="@+id/btSaveTask"/>
     <requestFocus />
 
+    <TimePicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/timePicker"
+        style="@style/Theme.AppCompat.Light.DarkActionBar"
+        android:layout_below="@+id/btSaveTask"
+        android:layout_centerHorizontal="true" />
+
+    <DatePicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/datePicker"
+        android:calendarViewShown="true"
+        android:spinnersShown="false"
+        android:layout_alignWithParentIfMissing="false"
+        android:layout_below="@+id/timePicker"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

@@ -1,23 +1,38 @@
 package com.ao.rememberus;
 
+import java.util.Date;
+
 /**
  * Created by joe on 25/10/13.
  */
 public class Task {
     int _id;
     private String _taskMessage ;
+    private Date _date;
+
+    /*-----------Ctor---------------------------*/
+    public Task(int id, String str, Date date) {
+        this._id = id;
+        this._taskMessage = str;
+        this._date = date;
+    }
 
     public Task(int id, String str) {
         this._id = id;
         this._taskMessage = str;
     }
 
-    public Task(String str) {
+    public Task(String str, Date date) {
         this._taskMessage = str;
+        this._date = date;
+    }
+    public Task(int _id) {
+        this._id = _id;
     }
 
     public Task() {
     }
+    /*-------------------------------------------*/
 
     public String getTaskMessage() {
         return _taskMessage;
@@ -35,8 +50,19 @@ public class Task {
         this._id = id;
     }
 
+    public Date get_date() {
+        return _date;
+    }
+
+    public void set_date(Date _date) {
+        this._date = _date;
+    }
+
     @Override
-    public String toString (){
+     public String toString (){
         return this._taskMessage;
     }
+
+    public static int Y(int year)  {return year-1900;}
+    public static int M(int month) {return month-1;}
 }

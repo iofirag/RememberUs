@@ -29,6 +29,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // Contacts Table Columns names
     private static final String KEY_ID = "id";
     private static final String KEY_MESSAGE = "message";
+    private static final String KEY_DATE_YEAR = "year";
+    private static final String KEY_DATE_MONTH = "month";
+    private static final String KEY_DATE_DAY = "day";
+    private static final String KEY_TIME_HOUR = "hour";
+    private static final String KEY_TIME_MINUTES = "minutes";
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -37,10 +42,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // Creating Tables
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_TASKS + "("
-                + KEY_ID + " INTEGER PRIMARY KEY,"
-                + KEY_MESSAGE + ")";
-        db.execSQL(CREATE_CONTACTS_TABLE);
+        String CREATE_TASKS_TABLE = "CREATE TABLE " + TABLE_TASKS
+                + "("
+                + KEY_ID            + " INTEGER PRIMARY KEY, "
+                + KEY_MESSAGE       + " , "
+                + KEY_DATE_YEAR     + " , "
+                + KEY_DATE_MONTH    + " , "
+                + KEY_DATE_DAY      + " , "
+                + KEY_TIME_HOUR     + " , "
+                + KEY_TIME_MINUTES
+                + ")";
+        db.execSQL(CREATE_TASKS_TABLE);
     }
 
     // Upgrading database
@@ -57,20 +69,25 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      * All CRUD(Create, Read, Update, Delete) Operations
      */
 
-    // Adding new contact
+    // Adding new task
     void addTask(Task task) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(KEY_MESSAGE, task.getTaskMessage()); // Task Text
+        values.put(KEY_DATE_YEAR, task.get_date().getYear());
+        values.put(KEY_DATE_MONTH, task.get_date().getMonth());
+        values.put(KEY_DATE_DAY, task.get_date().getDay());
+        values.put(KEY_TIME_HOUR, task.get_date().getHours());
+        values.put(KEY_TIME_MINUTES, task.get_date().getMinutes());
 
         // Inserting Row
-        db.insert(TABLE_TASKS, null, values);
+        db.insert(TABLE_TASKS, null, values );
         db.close(); // Closing database connection
     }
 
 
-    // Getting single contact
+    // Getting single task
     Task getTask(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
