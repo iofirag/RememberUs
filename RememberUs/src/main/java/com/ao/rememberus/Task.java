@@ -20,6 +20,7 @@ public class Task {
     public Task(int id, String str) {
         this._id = id;
         this._taskMessage = str;
+        this._date= new Date();
     }
 
     public Task(String str, Date date) {
@@ -28,6 +29,7 @@ public class Task {
     }
     public Task(int _id) {
         this._id = _id;
+        this._date= new Date();
     }
 
     public Task() {
@@ -59,7 +61,7 @@ public class Task {
     }
 
     @Override
-     public String toString (){
+    public String toString (){
         return this._taskMessage;
     }
 

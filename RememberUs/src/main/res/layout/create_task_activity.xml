@@ -37,8 +37,9 @@ tools:ignore="MergeRootFrame"
         android:layout_height="wrap_content"
         android:id="@+id/timePicker"
         style="@style/Theme.AppCompat.Light.DarkActionBar"
-        android:layout_below="@+id/btSaveTask"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/dateCheckBox"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible" />
 
     <DatePicker
         android:layout_width="wrap_content"
@@ -47,7 +48,19 @@ tools:ignore="MergeRootFrame"
         android:calendarViewShown="true"
         android:spinnersShown="false"
         android:layout_alignWithParentIfMissing="false"
-        android:layout_below="@+id/timePicker"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:visibility="invisible"
+        android:layout_below="@+id/timePicker" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="time reminder"
+        android:id="@+id/dateCheckBox"
+        android:layout_below="@+id/description"
+        android:layout_alignParentLeft="true"
+        android:checked="false"
+        android:onClick="setAlarm" />
 
 </RelativeLayout>

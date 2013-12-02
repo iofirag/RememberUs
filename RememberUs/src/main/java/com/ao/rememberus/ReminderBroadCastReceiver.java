@@ -21,6 +21,8 @@ public class ReminderBroadCastReceiver extends BroadcastReceiver {
         String notificationText = intent.getStringExtra("taskMessage");
         intent.removeExtra("taskMessage");
 
+                                System.out.println(notificationText);
+
         Notification notification = new Notification(R.drawable.ic_launcher, "New scheduled task", System.currentTimeMillis());
         notification.setLatestEventInfo( context,"RememberUs", notificationText, pendingIntent);
         notification.flags = Notification.FLAG_AUTO_CANCEL;
