@@ -89,15 +89,21 @@ public class CreateTaskActivity extends Activity {
             DatePicker datePicker = (DatePicker) findViewById(R.id.datePicker);
             Date date= new Date(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(), timePicker.getCurrentHour() , timePicker.getCurrentMinute() );
 
+            int nowUseAsId = (int) (long) System.currentTimeMillis();
+            if (nowUseAsId<0) nowUseAsId*=-1;
+
+                                    System.out.println("nowUseAsId="+nowUseAsId);
+
             String taskMessage = description.getText().toString();
-            Task task = new Task(taskMessage, date);
+            Task task = new Task(nowUseAsId, taskMessage, date);
+
             singleton.getInstance(this).getArrayList().add(0, task);
 
             //-----continue checking from here -> to register date & cancel alarmManager after if click done
             saveToDb(task);
             CheckBox satView = (CheckBox) findViewById(R.id.dateCheckBox);
             if(satView.isChecked())
-                createAlarmAtDate(taskMessage, date);
+                createAlarmAtDate(task, date);
 
             description.setText("");
             finish();
@@ -108,11 +114,15 @@ public class CreateTaskActivity extends Activity {
         singleton.getInstance(this).getDb().addTask(newTask);
     }
 
-    private void createAlarmAtDate(String taskMessage, Date date){
+    private void createAlarmAtDate(Task task, Date date){
         Intent intent = new Intent("com.ao.rememberus.ReminderBroadCastReceiver");
-        intent.putExtra("taskMessage", taskMessage);
+        intent.putExtra("taskMessage", task.getTaskMessage() );
+                        System.out.println("task.getTaskMessage()="+task.getTaskMessage());
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+        intent.putExtra("taskId", task.getID());
+                        System.out.println("task.getID()="+task.getID());
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, task.getID(), intent, 0);
 
         AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + millisecondsUntilDate(date) , pendingIntent);
@@ -122,7 +132,6 @@ public class CreateTaskActivity extends Activity {
         Date now = new Date();
         // fix date before calculate
         now.setYear(now.getYear()+1900);
-        //now.setDate(now.getDay() + 1);
 
                                 System.out.println(now);
 

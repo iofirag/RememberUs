@@ -37,6 +37,14 @@ public class MainActivity extends Activity {
         });
     }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+        System.out.println("MainActivity onResume()");
+        updateListView();
+//      currentList.notifyDataSetChanged();
+    }
+
     public void restoreFromDb(){
         List<Task> list = singleton.getInstance(this).getDb().getAllTasks();
         for(Task task : list){

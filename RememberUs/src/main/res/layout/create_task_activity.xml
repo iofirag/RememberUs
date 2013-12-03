@@ -60,7 +60,6 @@ tools:ignore="MergeRootFrame"
         android:id="@+id/dateCheckBox"
         android:layout_below="@+id/description"
         android:layout_alignParentLeft="true"
-        android:checked="false"
-        android:onClick="setAlarm" />
+        android:checked="false" />
 
 </RelativeLayout>

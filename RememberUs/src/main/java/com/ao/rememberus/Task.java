@@ -36,6 +36,7 @@ public class Task {
     }
     /*-------------------------------------------*/
 
+    // set/get taskMessage
     public String getTaskMessage() {
         return _taskMessage;
     }
@@ -43,19 +44,18 @@ public class Task {
         this._taskMessage = name;
     }
 
-    // getting ID
+    // set/get ID
     public int getID(){
         return this._id;
     }
-    // setting id
     public void setID(int id){
         this._id = id;
     }
 
+    // set/get Date
     public Date get_date() {
         return _date;
     }
-
     public void set_date(Date _date) {
         this._date = _date;
     }
