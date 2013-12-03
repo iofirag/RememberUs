@@ -92,7 +92,7 @@ public class CreateTaskActivity extends Activity {
             int nowUseAsId = (int) (long) System.currentTimeMillis();
             if (nowUseAsId<0) nowUseAsId*=-1;
 
-                                    System.out.println("nowUseAsId="+nowUseAsId);
+//                                    System.out.println("nowUseAsId="+nowUseAsId);
 
             String taskMessage = description.getText().toString();
             Task task = new Task(nowUseAsId, taskMessage, date);
@@ -117,10 +117,10 @@ public class CreateTaskActivity extends Activity {
     private void createAlarmAtDate(Task task, Date date){
         Intent intent = new Intent("com.ao.rememberus.ReminderBroadCastReceiver");
         intent.putExtra("taskMessage", task.getTaskMessage() );
-                        System.out.println("task.getTaskMessage()="+task.getTaskMessage());
+//                        System.out.println("task.getTaskMessage()="+task.getTaskMessage());
 
         intent.putExtra("taskId", task.getID());
-                        System.out.println("task.getID()="+task.getID());
+//                        System.out.println("task.getID()="+task.getID());
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, task.getID(), intent, 0);
 
@@ -133,7 +133,7 @@ public class CreateTaskActivity extends Activity {
         // fix date before calculate
         now.setYear(now.getYear()+1900);
 
-                                System.out.println(now);
+//                                System.out.println(now);
 
         GregorianCalendar currentDay=new  GregorianCalendar (now.getYear(),now.getMonth(),now.getDay(),now.getHours(),now.getMinutes(),0);
         GregorianCalendar nextDay=new  GregorianCalendar (nextDate.getYear(),nextDate.getMonth(),nextDate.getDay(),nextDate.getHours(),nextDate.getMinutes(),0);
@@ -145,8 +145,8 @@ public class CreateTaskActivity extends Activity {
 //                        System.out.println(nextDate.getMinutes()+" " +  now.getMinutes() );
 
         long diff_in_ms = nextDay.getTimeInMillis()-currentDay.getTimeInMillis();
-                             System.out.println("diff_in_s=" +diff_in_ms/1000);
-                             System.out.println("diff_in_m=" +diff_in_ms/60000);
+//                             System.out.println("diff_in_s=" +diff_in_ms/1000);
+//                             System.out.println("diff_in_m=" +diff_in_ms/60000);
         return diff_in_ms;
     }
 
