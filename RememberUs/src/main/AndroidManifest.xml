@@ -29,6 +29,10 @@
             android:label="@string/title_activity_create_task" >
         </activity>
 
+        <service
+            android:name=".myService" >
+        </service>
+
         <receiver android:name=".ReminderBroadCastReceiver">
             <intent-filter>
                 <action android:name="com.ao.rememberus.ReminderBroadCastReceiver" />

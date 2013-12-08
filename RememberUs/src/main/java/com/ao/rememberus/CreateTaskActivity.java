@@ -6,6 +6,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -19,6 +20,17 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -29,6 +41,10 @@ public class CreateTaskActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_task_activity);
+
+        Intent service = new Intent(this, myService.class);
+        startService(service);
+        System.out.println("service intent sent");
 
         CheckBox satView = (CheckBox) findViewById(R.id.dateCheckBox);
         satView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -114,6 +130,20 @@ public class CreateTaskActivity extends Activity {
         singleton.getInstance(this).getDb().addTask(newTask);
     }
 
+    // If user click random button
+    public void getFromInternetRandomTask(View view){
+        URL url = null;
+        try {
+            url= new URL("http://mobile1-tasks-dispatcher.herokuapp.com/task/random");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        if (url!=null){
+            new GetFromWebTask().execute( url );
+            System.out.println("AsyncTask created.");
+        }
+    }
+
     // if user check the dateButton
     private void createAlarmAtDate(Task task, Date date){
         Intent intent = new Intent("com.ao.rememberus.ReminderBroadCastReceiver");
@@ -172,4 +202,68 @@ public class CreateTaskActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+
+
+
+
+
+
+
+
+
+    private class GetFromWebTask  extends AsyncTask<URL, Integer, String> {
+
+        @Override
+        protected String doInBackground(URL... urls) {
+            String result = getFromWeb(urls[0]);
+            //bg: this takes some time and happens on a different thread
+            return result;
+        }
+
+        private String getFromWeb(URL url) {
+            String response = null;
+            try {
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+
+                //String response=urlConnection.getInputStream() ;
+                // read from urlConnection.getInputStream() to
+
+                InputStream in = new
+                        BufferedInputStream(urlConnection.getInputStream());
+                InputStreamReader inReader = new InputStreamReader(in);
+                BufferedReader bufferedReader = new
+                        BufferedReader(inReader);
+                StringBuilder responseBuilder = new StringBuilder();
+                for (String line=bufferedReader.readLine(); line!=null;
+                     line=bufferedReader.readLine()){
+                    responseBuilder.append(line);
+                }
+                response = responseBuilder.toString();
+
+                                System.out.println("connected");
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String result){
+            try {
+                JSONObject taskJSON = new JSONObject( result );
+
+                EditText et = (EditText) findViewById(R.id.description);
+                et.setText( taskJSON.getString("description") );
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
 }
+

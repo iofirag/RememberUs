@@ -1,6 +1,7 @@
 package com.ao.rememberus;
 
-import android.content.Context;
+import android.app.IntentService;
+import android.content.Intent;
 import android.os.AsyncTask;
 
 import org.json.JSONException;
@@ -17,21 +18,43 @@ import java.net.URL;
 import java.util.Date;
 
 /**
- * Created by Avishay on 06/12/13.
+ * Created by joe on 08/12/13.
  */
-
-class GetFromWebTask  extends AsyncTask<URL, Integer, String> {
-
-    Context context;
-    GetFromWebTask (Context context)
-    {
-        this.context = context;
-    }
-    GetFromWebTask ()
-    {
+public class myService extends IntentService {
+    /**
+     * Creates an IntentService.  Invoked by your subclass's constructor.
+     */
+    public myService() {
+        super("myService");
+        System.out.println("service ctor");
     }
 
     @Override
+    protected void onHandleIntent(Intent intent) {
+        URL url = null;
+        try {
+            url= new URL("http://mobile1-tasks-dispatcher.herokuapp.com/task/random");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        if (url!=null){
+            new GetFromWebTask().execute( url );
+            System.out.println("AsyncTask created.");
+        }
+    }
+
+
+
+
+
+
+
+    private class GetFromWebTask  extends AsyncTask<URL, Integer, String> {
+
+        GetFromWebTask(){
+            System.out.println("GetFromWebTask created");
+        }
+        @Override
         protected String doInBackground(URL... urls) {
             String result = getFromWeb(urls[0]);
             //bg: this takes some time and happens on a different thread
@@ -68,29 +91,23 @@ class GetFromWebTask  extends AsyncTask<URL, Integer, String> {
             return response;
         }
 
+        @Override
+        protected void onPostExecute(String result){
+            try {
+                JSONObject taskJSON = new JSONObject( result );
 
-    @Override
-    protected void onPostExecute(String result){
-        try {
-            JSONObject taskJSON = new JSONObject( result );
+                //create task and save it to array
+                Task task = new Task(taskJSON.getInt("id"), taskJSON.getString("description") , new Date() );
+                Singleton.getInstance( getApplicationContext() ).getArrayList().add(0, task);
 
-            Task task = new Task(taskJSON.getInt("id"), taskJSON.getString("description") , new Date());
-            Singleton.getInstance(context).getArrayList().add(0, task);
+                // Save to DB
+                //ListView lv = (ListView) findViewById(R.id.lvListReminders);
+                //TaskListBaseAdapter currentList = new TaskListBaseAdapter(this, Singleton.getInstance(this).getArrayList());
 
-            // Save to DB
-            //ListView lv = (ListView) findViewById(R.id.lvListReminders);
-            //TaskListBaseAdapter currentList = new TaskListBaseAdapter(this, Singleton.getInstance(this).getArrayList());
-
-            Singleton.getInstance(context).getDb().addTask(task);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
+                Singleton.getInstance( getApplicationContext() ).getDb().addTask(task);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
-
 }
-
-//somewhere in the activity
-//new GetFromWebTask("www.google.com").execute();
-
-
