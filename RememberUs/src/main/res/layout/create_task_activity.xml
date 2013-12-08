@@ -39,7 +39,7 @@ tools:ignore="MergeRootFrame"
         style="@style/Theme.AppCompat.Light.DarkActionBar"
         android:layout_centerHorizontal="true"
         android:visibility="invisible"
-        android:layout_marginBottom="314dp"
+        android:layout_marginBottom="260dp"
         android:layout_below="@+id/dateCheckBox"
         android:layout_alignParentBottom="true" />
 

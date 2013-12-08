@@ -9,6 +9,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 public class MainActivity extends Activity {
@@ -21,11 +23,12 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         if (singleton.getInstance(this).getArrayList().isEmpty())
             restoreFromDb();
-
+        getFromInternet();
         //singleton.getInstance(this).getDb().onUpgrade(singleton.getInstance(this).getDb().getWritableDatabase(), 1,2);
-        updateListView();
+        //updateListView();
 
         currentList = new TaskListBaseAdapter(this, singleton.getInstance(this).getArrayList());
         ListView listView = (ListView) findViewById(R.id.lvListReminders);
@@ -42,9 +45,21 @@ public class MainActivity extends Activity {
         super.onResume();
         System.out.println("MainActivity onResume()");
         updateListView();
-//      currentList.notifyDataSetChanged();
+        currentList.notifyDataSetChanged();
     }
 
+    public void getFromInternet(){
+        URL url = null;
+        try {
+            url= new URL("http://mobile1-tasks-dispatcher.herokuapp.com/task/random");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        if (url!=null){
+            new GetFromWebTask(this).execute( url  );
+            System.out.println("GetFromWebTask completed.");
+        }
+    }
     public void restoreFromDb(){
         List<Task> list = singleton.getInstance(this).getDb().getAllTasks();
         for(Task task : list){

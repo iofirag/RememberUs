@@ -114,6 +114,7 @@ public class CreateTaskActivity extends Activity {
         singleton.getInstance(this).getDb().addTask(newTask);
     }
 
+    // if user check the dateButton
     private void createAlarmAtDate(Task task, Date date){
         Intent intent = new Intent("com.ao.rememberus.ReminderBroadCastReceiver");
         intent.putExtra("taskMessage", task.getTaskMessage() );
