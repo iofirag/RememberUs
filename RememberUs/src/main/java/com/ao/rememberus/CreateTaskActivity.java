@@ -42,9 +42,6 @@ public class CreateTaskActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_task_activity);
 
-        Intent service = new Intent(this, myService.class);
-        startService(service);
-        System.out.println("service intent sent");
 
         CheckBox satView = (CheckBox) findViewById(R.id.dateCheckBox);
         satView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

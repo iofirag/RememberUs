@@ -1,6 +1,8 @@
 package com.ao.rememberus;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends Activity {
@@ -20,7 +23,6 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         if (singleton.getInstance(this).getArrayList().isEmpty())
             restoreFromDb();
@@ -36,6 +38,8 @@ public class MainActivity extends Activity {
                 editReminder(v);
             }
         });
+
+        CreateRepeatAlarmManager();
     }
 
     @Override
@@ -46,6 +50,54 @@ public class MainActivity extends Activity {
         currentList.notifyDataSetChanged();
     }
 
+    private void CreateRepeatAlarmManager() {
+        //----(
+        //Intent intent = new Intent("com.ao.rememberus.ReminderBroadCastReceiver");
+//        intent.putExtra("taskMessage", task.getTaskMessage() );
+////                        System.out.println("task.getTaskMessage()="+task.getTaskMessage());
+//
+//        intent.putExtra("taskId", task.getID());
+////                        System.out.println("task.getID()="+task.getID());
+//
+//        //PendingIntent pendingIntent = PendingIntent.getBroadcast(this, task.getID(), intent, 0);
+//
+//        //AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+//        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + millisecondsUntilDate(date) , pendingIntent);
+        //----)
+
+        //----internet(
+        Calendar calendar = Calendar.getInstance();
+        // 9 AM
+        calendar.set(Calendar.HOUR_OF_DAY, 20);
+        calendar.set(Calendar.MINUTE, 40);
+        calendar.set(Calendar.SECOND, 0);
+        PendingIntent pi = PendingIntent.getService(this, 0,
+                new Intent(this, myService.class),PendingIntent.FLAG_CANCEL_CURRENT/*FLAG_UPDATE_CURRENT*/);
+        AlarmManager am = (AlarmManager) this.getSystemService(ALARM_SERVICE);
+        am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pi);
+        //----)
+
+        //----(
+//        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+//        Intent intent = new Intent(this, myService.class);
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0,intent, PendingIntent.FLAG_CANCEL_CURRENT);
+//
+//        Date curr=new Date();
+//        curr.setHours(h);
+//        curr.setMinutes(m);
+//        c.setTime(curr);
+//        c.set(Calendar.SECOND, 0);
+//
+//        Calendar c1 = Calendar.getInstance();
+//        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(),24*60*60*1000, pendingIntent);
+        ///-----)
+
+        //---
+//        Intent service = new Intent(this, myService.class);
+//        startService(service);
+//        System.out.println("service intent sent");
+        //---
+    }
 
     public void restoreFromDb(){
         List<Task> list = singleton.getInstance(this).getDb().getAllTasks();
