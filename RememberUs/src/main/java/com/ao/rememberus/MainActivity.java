@@ -52,27 +52,14 @@ public class MainActivity extends Activity {
 
     private void CreateRepeatAlarmManager() {
         //----(
-        //Intent intent = new Intent("com.ao.rememberus.ReminderBroadCastReceiver");
-//        intent.putExtra("taskMessage", task.getTaskMessage() );
-////                        System.out.println("task.getTaskMessage()="+task.getTaskMessage());
-//
-//        intent.putExtra("taskId", task.getID());
-////                        System.out.println("task.getID()="+task.getID());
-//
-//        //PendingIntent pendingIntent = PendingIntent.getBroadcast(this, task.getID(), intent, 0);
-//
-//        //AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-//        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + millisecondsUntilDate(date) , pendingIntent);
-        //----)
-
-        //----internet(
         Calendar calendar = Calendar.getInstance();
         // 9 AM
-        calendar.set(Calendar.HOUR_OF_DAY, 20);
-        calendar.set(Calendar.MINUTE, 40);
+        calendar.set(Calendar.HOUR_OF_DAY, 01);
+        calendar.set(Calendar.MINUTE, 35);
         calendar.set(Calendar.SECOND, 0);
-        PendingIntent pi = PendingIntent.getService(this, 0,
-                new Intent(this, myService.class),PendingIntent.FLAG_CANCEL_CURRENT/*FLAG_UPDATE_CURRENT*/);
+        Intent intent = new Intent(this, myService.class);
+        intent.putExtra("this",this.toString());
+        PendingIntent pi = PendingIntent.getService(this, 55555, intent, PendingIntent./*FLAG_CANCEL_CURRENT*/FLAG_UPDATE_CURRENT);
         AlarmManager am = (AlarmManager) this.getSystemService(ALARM_SERVICE);
         am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pi);
         //----)
@@ -91,12 +78,6 @@ public class MainActivity extends Activity {
 //        Calendar c1 = Calendar.getInstance();
 //        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(),24*60*60*1000, pendingIntent);
         ///-----)
-
-        //---
-//        Intent service = new Intent(this, myService.class);
-//        startService(service);
-//        System.out.println("service intent sent");
-        //---
     }
 
     public void restoreFromDb(){

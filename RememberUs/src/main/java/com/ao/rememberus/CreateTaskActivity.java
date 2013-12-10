@@ -254,7 +254,7 @@ public class CreateTaskActivity extends Activity {
 
                 EditText et = (EditText) findViewById(R.id.description);
                 et.setText( taskJSON.getString("description") );
-
+                                System.out.println("get task from http completed.");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
