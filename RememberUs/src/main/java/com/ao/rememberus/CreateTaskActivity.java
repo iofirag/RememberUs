@@ -132,12 +132,13 @@ public class CreateTaskActivity extends Activity {
         URL url = null;
         try {
             url= new URL("http://mobile1-tasks-dispatcher.herokuapp.com/task/random");
-        } catch (MalformedURLException e) {
+
+            if (url!=null){
+                new GetFromWebTask().execute( url );
+                System.out.println("AsyncTask created.");
+            }
+        } catch (Exception e) {
             e.printStackTrace();
-        }
-        if (url!=null){
-            new GetFromWebTask().execute( url );
-            System.out.println("AsyncTask created.");
         }
     }
 
@@ -243,6 +244,8 @@ public class CreateTaskActivity extends Activity {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
             return response;
         }
@@ -256,6 +259,8 @@ public class CreateTaskActivity extends Activity {
                 et.setText( taskJSON.getString("description") );
                                 System.out.println("get task from http completed.");
             } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (Exception e){
                 e.printStackTrace();
             }
         }
